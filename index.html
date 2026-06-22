@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Expense Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+<header>
+<h1><i class="fa-solid fa-wallet"></i> Smart Expense Manager</h1>
+<button id="themeBtn"><i class="fa-solid fa-moon"></i></button>
+</header>
+
+<div class="date" id="today"></div>
+
+<section class="cards">
+<div class="card"><h3>Total Expenses</h3><p id="total">₹0</p></div>
+<div class="card"><h3>Entries</h3><p id="count">0</p></div>
+<div class="card"><h3>Budget Left</h3><p id="budgetLeft">₹20000</p></div>
+</section>
+
+<section class="form">
+<input id="name" placeholder="Expense name">
+<input id="amount" type="number" placeholder="Amount">
+<select id="category">
+<option value="">Category</option>
+<option>Food</option><option>Transport</option><option>Shopping</option>
+<option>Entertainment</option><option>Bills</option><option>Other</option>
+</select>
+<button id="addBtn">Add Expense</button>
+</section>
+
+<div class="progress"><div id="progressBar"></div></div>
+
+<section class="toolbar">
+<input id="search" placeholder="Search...">
+<select id="filter">
+<option>All</option><option>Food</option><option>Transport</option>
+<option>Shopping</option><option>Entertainment</option><option>Bills</option><option>Other</option>
+</select>
+<button id="exportBtn">Export CSV</button>
+</section>
+
+<div class="chartWrap"><canvas id="chart"></canvas></div>
+
+<table>
+<thead><tr><th>Date</th><th>Name</th><th>Amount</th><th>Category</th><th>Actions</th></tr></thead>
+<tbody id="list"></tbody>
+</table>
+
+<div id="empty">No expenses added yet.</div>
+<div id="toast"></div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
