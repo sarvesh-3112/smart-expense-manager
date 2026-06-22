@@ -1,61 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Expense Manager</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Expense Manager - Premium Dashboard</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Local Stylesheet -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="app">
-<header>
-<h1><i class="fa-solid fa-wallet"></i> Smart Expense Manager</h1>
-<button id="themeBtn"><i class="fa-solid fa-moon"></i></button>
-</header>
+  <div class="app">
+    <header>
+      <h1><i class="fa-solid fa-wallet"></i> Smart Expense Manager</h1>
+      <button id="themeBtn" aria-label="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
+    </header>
 
-<div class="date" id="today"></div>
+    <div class="date" id="today">
+      <i class="fa-regular fa-calendar-days"></i> Loading date...
+    </div>
 
-<section class="cards">
-<div class="card"><h3>Total Expenses</h3><p id="total">₹0</p></div>
-<div class="card"><h3>Entries</h3><p id="count">0</p></div>
-<div class="card"><h3>Budget Left</h3><p id="budgetLeft">₹20000</p></div>
-</section>
+    <!-- Main Dashboard Grid Layout -->
+    <div class="dashboard-grid">
+      
+      <!-- Left Dashboard Column: Stats & Add Form -->
+      <aside class="dashboard-left">
+        <h2 class="section-title"><i class="fa-solid fa-chart-pie"></i> Overview & Budget</h2>
+        
+        <section class="cards">
+          <!-- Total Expenses Card -->
+          <div class="card card-expenses">
+            <div class="card-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+            <div class="card-info">
+              <h3>Total Expenses</h3>
+              <p id="total">₹0</p>
+            </div>
+          </div>
+          
+          <!-- Entries Card -->
+          <div class="card card-entries">
+            <div class="card-icon"><i class="fa-solid fa-list-ol"></i></div>
+            <div class="card-info">
+              <h3>Entries</h3>
+              <p id="count">0</p>
+            </div>
+          </div>
+          
+          <!-- Configurable Budget Card -->
+          <div class="card card-budget" id="budgetCard" title="Click to edit budget limit">
+            <div class="card-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+            <div class="card-info">
+              <h3>Budget Left</h3>
+              <p id="budgetLeft">₹20000</p>
+            </div>
+          </div>
+        </section>
 
-<section class="form">
-<input id="name" placeholder="Expense name">
-<input id="amount" type="number" placeholder="Amount">
-<select id="category">
-<option value="">Category</option>
-<option>Food</option><option>Transport</option><option>Shopping</option>
-<option>Entertainment</option><option>Bills</option><option>Other</option>
-</select>
-<button id="addBtn">Add Expense</button>
-</section>
+        <!-- Budget Progress Container -->
+        <div class="progress-container">
+          <div class="progress-header">
+            <span>Budget Usage Limit</span>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <div id="progressBar"></div>
+          </div>
+          
+          <!-- Budget Editing Form (Hidden by default) -->
+          <div id="budgetEditGroup" class="budget-input-group" style="display: none;">
+            <input type="number" id="budgetInput" placeholder="New Budget Limit" min="1">
+            <button class="budget-save-btn" id="budgetSaveBtn">Save</button>
+            <button class="budget-cancel-btn" id="budgetCancelBtn">Cancel</button>
+          </div>
+        </div>
 
-<div class="progress"><div id="progressBar"></div></div>
+        <!-- Add Transaction Form -->
+        <section class="form-card">
+          <h2 class="section-title" style="margin-bottom: 20px;"><i class="fa-solid fa-plus"></i> Add New Expense</h2>
+          <div class="form-group">
+            <input id="name" placeholder="Expense description (e.g. Groceries)">
+            <input id="amount" type="number" placeholder="Amount (₹)">
+            <select id="category" aria-label="Select Category">
+              <option value="">Choose Category</option>
+              <option value="Food">Food</option>
+              <option value="Transport">Transport</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Bills">Bills</option>
+              <option value="Other">Other</option>
+            </select>
+            <button id="addBtn"><i class="fa-solid fa-plus"></i> Add Expense</button>
+          </div>
+        </section>
+      </aside>
 
-<section class="toolbar">
-<input id="search" placeholder="Search...">
-<select id="filter">
-<option>All</option><option>Food</option><option>Transport</option>
-<option>Shopping</option><option>Entertainment</option><option>Bills</option><option>Other</option>
-</select>
-<button id="exportBtn">Export CSV</button>
-</section>
+      <!-- Right Dashboard Column: Actions, Visual Chart & List -->
+      <main class="dashboard-right">
+        <!-- Filter Toolbar -->
+        <h2 class="section-title"><i class="fa-solid fa-sliders"></i> Filter & Actions</h2>
+        <section class="toolbar">
+          <input id="search" placeholder="🔍 Search expenses...">
+          <select id="filter" aria-label="Filter by Category">
+            <option value="All">All Categories</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Bills">Bills</option>
+            <option value="Other">Other</option>
+          </select>
+          <button id="exportBtn"><i class="fa-solid fa-file-export"></i> Export CSV</button>
+        </section>
 
-<div class="chartWrap"><canvas id="chart"></canvas></div>
+        <!-- Chart Visualization -->
+        <h2 class="section-title"><i class="fa-solid fa-chart-column"></i> Expense Distribution</h2>
+        <div class="chartWrap">
+          <canvas id="chart"></canvas>
+        </div>
 
-<table>
-<thead><tr><th>Date</th><th>Name</th><th>Amount</th><th>Category</th><th>Actions</th></tr></thead>
-<tbody id="list"></tbody>
-</table>
+        <!-- Table Transaction Records -->
+        <h2 class="section-title"><i class="fa-solid fa-table-list"></i> Transaction History</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th style="text-align: center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="list"></tbody>
+          </table>
+          <div id="empty">
+            <i class="fa-solid fa-folder-open"></i> No expenses added yet.
+          </div>
+        </div>
+      </main>
 
-<div id="empty">No expenses added yet.</div>
-<div id="toast"></div>
-</div>
-<script src="script.js"></script>
+    </div>
+
+    <!-- Toast Notification Banner -->
+    <div id="toast"></div>
+  </div>
+
+  <!-- Application Script -->
+  <script src="script.js"></script>
 </body>
 </html>
